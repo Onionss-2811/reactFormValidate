@@ -10,7 +10,7 @@ const currentYear = new Date().getFullYear();
 const currentMounth = new Date().getMonth();
 const currentDate = new Date().getDate();
 const currentHours = new Date().getHours();
-const currentTimestamp = new Date(currentYear + "-" +currentMounth +"-"+ currentDate).getTime();
+const currentTimestamp = new Date(currentYear + "-" + currentMounth + "-" + currentDate).getTime();
 
 function NameInput() {
   let nameInputTrim;
@@ -22,10 +22,12 @@ function NameInput() {
   if (nameInput !== undefined && nameInputTrim !== "") {
     document.getElementById("messageInputNameNull").classList.add("d-none")
     document.getElementById("nameInput").value = nameInput.replace(regexName, "");
+    document.getElementById("buttonSubmit").disabled = false;
   } else
-  if (nameInputTrim === "") {
-    document.getElementById("messageInputNameNull").classList.remove("d-none")
-  }
+    if (nameInputTrim === "") {
+      document.getElementById("messageInputNameNull").classList.remove("d-none")
+      document.getElementById("buttonSubmit").disabled = true;
+    }
 
   return (
     <div className="mt-4">
@@ -45,10 +47,12 @@ function PhoneInput() {
   if (phoneInput !== undefined && phoneInputTrim !== "") {
     document.getElementById("messageInputPhoneNull").classList.add("d-none")
     document.getElementById("phoneInput").value = phoneInput.replace(regexPhone, "");
+    document.getElementById("buttonSubmit").disabled = false;
   } else
-  if (phoneInputTrim === "") {
-    document.getElementById("messageInputPhoneNull").classList.remove("d-none")
-  }
+    if (phoneInputTrim === "") {
+      document.getElementById("messageInputPhoneNull").classList.remove("d-none")
+      document.getElementById("buttonSubmit").disabled = true;
+    }
 
   return (
     <div className="mt-2">
@@ -87,18 +91,21 @@ function DateOfBirthInput() {
 
   if (dateOfBirthInput !== undefined && dateOfBirthInput !== "") {
     birthday = new Date(dateOfBirthInput);
-    birthdayTimestamp = new Date(birthday.getFullYear() + "-" +birthday.getMonth() +"-"+ birthday.getDate()).getTime();
+    birthdayTimestamp = new Date(birthday.getFullYear() + "-" + birthday.getMonth() + "-" + birthday.getDate()).getTime();
     if (birthdayTimestamp - currentTimestamp > -1) {
       document.getElementById("messageInputDateOfBirthFuture").classList.remove("d-none");
       document.getElementById("messageInputDateOfBirthNull").classList.add("d-none")
+      document.getElementById("buttonSubmit").disabled = true;
     } else
-    if (birthdayTimestamp - currentTimestamp < -1) {
-      document.getElementById("messageInputDateOfBirthFuture").classList.add("d-none");
-      document.getElementById("messageInputDateOfBirthNull").classList.add("d-none")
-    }
+      if (birthdayTimestamp - currentTimestamp < -1) {
+        document.getElementById("messageInputDateOfBirthFuture").classList.add("d-none");
+        document.getElementById("messageInputDateOfBirthNull").classList.add("d-none")
+        document.getElementById("buttonSubmit").disabled = false;
+      }
   }
   if (dateOfBirthInput === "") {
     document.getElementById("messageInputDateOfBirthNull").classList.remove("d-none")
+    document.getElementById("buttonSubmit").disabled = true;
   }
 
   return (
@@ -118,38 +125,43 @@ function AppointmentDateInput() {
   const [appointmentDateInput, setAppointmentDate] = useState()
   if (appointmentDateInput !== undefined && appointmentDateInput !== "") {
     appointmentDate = new Date(appointmentDateInput);
-    appointmentDateTimestamp = new Date(appointmentDate.getFullYear() + "-" +appointmentDate.getMonth() +"-"+ appointmentDate.getDate()).getTime();
+    appointmentDateTimestamp = new Date(appointmentDate.getFullYear() + "-" + appointmentDate.getMonth() + "-" + appointmentDate.getDate()).getTime();
     if (appointmentDateTimestamp < currentTimestamp) {
       genDefaultAppointmentTime();
       document.getElementById("messageInputAppointmentDatePast").classList.remove("d-none")
       document.getElementById("messageInputAppointmentDateNull").classList.add("d-none")
       document.getElementById("messageInputAppointmentDateThreshold").classList.add("d-none")
       document.getElementById("messageInputAppointmentDateOvertime").classList.add("d-none")
+      document.getElementById("buttonSubmit").disabled = true;
     } else
-    if (appointmentDateTimestamp === currentTimestamp && currentHours > 16) {
-      genDefaultAppointmentTime();
-      document.getElementById("messageInputAppointmentDateOvertime").classList.remove("d-none")
-      document.getElementById("messageInputAppointmentDateNull").classList.add("d-none")
-      document.getElementById("messageInputAppointmentDatePast").classList.add("d-none")
-      document.getElementById("messageInputAppointmentDateThreshold").classList.add("d-none")
-    } else
-    if ((appointmentDate.getMonth() >= currentMounth+2 && appointmentDate.getDate() - currentDate > 0) || appointmentDate.getMonth() >= currentMounth+3) {
-      genDefaultAppointmentTime();
-      document.getElementById("messageInputAppointmentDateThreshold").classList.remove("d-none")
-      document.getElementById("messageInputAppointmentDateNull").classList.add("d-none")
-      document.getElementById("messageInputAppointmentDatePast").classList.add("d-none")
-      document.getElementById("messageInputAppointmentDateOvertime").classList.add("d-none")
-    }else{
-      genOptionAppointmentTime();
-      document.getElementById("messageInputAppointmentDateNull").classList.add("d-none")
-      document.getElementById("messageInputAppointmentDatePast").classList.add("d-none")
-      document.getElementById("messageInputAppointmentDateThreshold").classList.add("d-none")
-      document.getElementById("messageInputAppointmentDateOvertime").classList.add("d-none")
-    }
+      if (appointmentDateTimestamp === currentTimestamp && currentHours > 16) {
+        genDefaultAppointmentTime();
+        document.getElementById("messageInputAppointmentDateOvertime").classList.remove("d-none")
+        document.getElementById("messageInputAppointmentDateNull").classList.add("d-none")
+        document.getElementById("messageInputAppointmentDatePast").classList.add("d-none")
+        document.getElementById("messageInputAppointmentDateThreshold").classList.add("d-none")
+        document.getElementById("buttonSubmit").disabled = true;
+      } else
+        if ((appointmentDate.getMonth() >= currentMounth + 2 && appointmentDate.getDate() - currentDate > 0) || appointmentDate.getMonth() >= currentMounth + 3) {
+          genDefaultAppointmentTime();
+          document.getElementById("messageInputAppointmentDateThreshold").classList.remove("d-none")
+          document.getElementById("messageInputAppointmentDateNull").classList.add("d-none")
+          document.getElementById("messageInputAppointmentDatePast").classList.add("d-none")
+          document.getElementById("messageInputAppointmentDateOvertime").classList.add("d-none")
+          document.getElementById("buttonSubmit").disabled = true;
+        } else {
+          genOptionAppointmentTime();
+          document.getElementById("messageInputAppointmentDateNull").classList.add("d-none")
+          document.getElementById("messageInputAppointmentDatePast").classList.add("d-none")
+          document.getElementById("messageInputAppointmentDateThreshold").classList.add("d-none")
+          document.getElementById("messageInputAppointmentDateOvertime").classList.add("d-none")
+          document.getElementById("buttonSubmit").disabled = false;
+        }
   }
   if (appointmentDateInput === "") {
     genDefaultAppointmentTime();
     document.getElementById("messageInputAppointmentDateNull").classList.remove("d-none")
+    document.getElementById("buttonSubmit").disabled = true;
   }
 
   return (
@@ -177,7 +189,7 @@ function AppointmentTimeInput() {
 
 function ButtonSubmit() {
   return (
-    <div className="mt-4 mb-4 d-flex justify-content-center align-items-center">
+    <div className="mt-2 mb-4 d-flex justify-content-center align-items-center">
       <button id={"buttonSubmit"} className="mt-4 mb-4 btn btn-primary fw-bold w-50">Đặt Lịch</button>
     </div>
   )
@@ -185,21 +197,17 @@ function ButtonSubmit() {
 
 function Form() {
   return (
-    <div className="height-100vh width-100 bg-secondary bg-gradient d-flex justify-content-center align-items-center">
-      <div className=" width-25 bg-white rounded-2 d-flex justify-content-center align-items-center">
-        <div className="width-85 height-100 ">
-          <div className="text-center mt-4">
-            <h4 className="fw-bold">HẸN LỊCH KHÁM</h4>
-          </div>
-          <NameInput />
-          <PhoneInput />
-          <GenderInput />
-          <DateOfBirthInput />
-          <AppointmentDateInput />
-          <AppointmentTimeInput />
-          <ButtonSubmit />
-        </div>
+    <div className="width-85 height-100 ">
+      <div className="text-center mt-4">
+        <h4 className="fw-bold">HẸN LỊCH KHÁM</h4>
       </div>
+      <NameInput />
+      <PhoneInput />
+      <GenderInput />
+      <DateOfBirthInput />
+      <AppointmentDateInput />
+      <AppointmentTimeInput />
+      <ButtonSubmit />
     </div>
   );
 }
@@ -208,7 +216,7 @@ export default Form;
 
 function genOptionAppointmentTime() {
   if (document.getElementById("appointmentTimeInput") != null) {
-      document.getElementById("appointmentTimeInput").remove();
+    document.getElementById("appointmentTimeInput").remove();
   }
 
   let select = document.createElement("select");
@@ -219,16 +227,16 @@ function genOptionAppointmentTime() {
   document.getElementById("selectAppointmentTime").appendChild(select);
 
   for (let index = 0; index < listAppointmentTime.length; index++) {
-      let option = document.createElement("option");
-      option.setAttribute("value", listAppointmentTime[index]);
-      option.text = listAppointmentTime[index];
-      document.getElementById("appointmentTimeInput").add(option);
+    let option = document.createElement("option");
+    option.setAttribute("value", listAppointmentTime[index]);
+    option.text = listAppointmentTime[index];
+    document.getElementById("appointmentTimeInput").add(option);
   }
 }
 
 function genDefaultAppointmentTime() {
   if (document.getElementById("appointmentTimeInput") != null) {
-      document.getElementById("appointmentTimeInput").remove();
+    document.getElementById("appointmentTimeInput").remove();
   }
 
   let select = document.createElement("select");

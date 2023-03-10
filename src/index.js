@@ -1,13 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.css';
 import Form from './App';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Form />
+    <div className="height-100vh width-100 bg-secondary bg-gradient d-flex justify-content-center align-items-center">
+      <div className=" width-25 bg-white rounded-2 d-flex justify-content-center align-items-center">
+      <Form />
+      </div>
+    </div>
   </React.StrictMode>
 );
 
