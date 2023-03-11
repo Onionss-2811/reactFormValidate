@@ -37,6 +37,7 @@ function NameInput() {
     </div >
   )
 }
+
 function PhoneInput() {
   let phoneInputTrim;
 
@@ -190,7 +191,7 @@ function AppointmentTimeInput() {
 function ButtonSubmit() {
   return (
     <div className="mt-2 mb-4 d-flex justify-content-center align-items-center">
-      <button id={"buttonSubmit"} className="mt-4 mb-4 btn btn-primary fw-bold w-50">Đặt Lịch</button>
+      <button id={"buttonSubmit"} className="mt-4 mb-4 btn btn-primary fw-bold w-50" onClick={handleSubmit}>Đặt Lịch</button>
     </div>
   )
 }
@@ -250,3 +251,47 @@ function genDefaultAppointmentTime() {
   document.getElementById("selectAppointmentTime").appendChild(select);
   document.getElementById("appointmentTimeInput").add(option);
 };
+
+function handleSubmit() {
+  if (document.getElementById("nameInput").value === "") {
+    document.getElementById("messageInputNameNull").classList.remove("d-none")
+    document.getElementById("buttonSubmit").disabled = true;
+    document.getElementById("nameInput").focus();
+    return false;
+  }
+  if (document.getElementById("phoneInput").value === "") {
+    document.getElementById("messageInputPhoneNull").classList.remove("d-none")
+    document.getElementById("buttonSubmit").disabled = true;
+    document.getElementById("phoneInput").focus();
+    return false;
+  }
+  if (document.getElementById("dateOfBirthInput").value === "") {
+    document.getElementById("messageInputDateOfBirthNull").classList.remove("d-none")
+    document.getElementById("buttonSubmit").disabled = true;
+    document.getElementById("dateOfBirthInput").focus();
+    return false;
+  }
+  if (document.getElementById("appointmentDateInput").value === "") {
+    document.getElementById("messageInputAppointmentDateNull").classList.remove("d-none")
+    document.getElementById("buttonSubmit").disabled = true;
+    document.getElementById("appointmentDateInput").focus();
+    return false;
+  }
+  console.log("pass");
+  let dataForm = {
+    name: document.getElementById("nameInput").value,
+    phone: document.getElementById("phoneInput").value,
+    gender: document.querySelector('input[name="genderInput"]:checked').value,
+    dateOfBirth: document.getElementById("dateOfBirthInput").value,
+    appointmentDate: document.getElementById("appointmentDateInput").value,
+    appointmentTime: document.getElementById("appointmentTimeInput").value,
+  }
+
+  localStorage.setItem('submit', JSON.stringify(dataForm));
+
+  document.getElementById("nameInput").value = null;
+  document.getElementById("phoneInput").value = null;
+  document.getElementById("dateOfBirthInput").value = null;
+  document.getElementById("appointmentDateInput").value = null;
+  genDefaultAppointmentTime();
+}
